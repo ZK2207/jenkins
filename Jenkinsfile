@@ -31,5 +31,5 @@ pipeline {
 				}
 			}
 		}
-		build 'Hello'
+	build 'Hello'
 	}
