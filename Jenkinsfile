@@ -1,0 +1,34 @@
+pipeline {
+	agent { 
+		node {
+			label 'Node2'
+			}
+		}
+
+	stages {
+		stage('Build') {
+			steps {
+				echo "Building.."
+				sh '''
+				echo "doing build stuff.."
+				'''
+				}
+			}
+		stage('Test') {
+			steps {
+				echo "Testing.."
+				sh '''
+				echo "Doing Test"
+				'''
+				}
+			}
+		stage('Deliver') {
+			steps {
+				echo 'Deliver....'
+				sh '''
+				echo "doing delivery stuff.."
+				'''
+				}
+			}
+		}
+	}
