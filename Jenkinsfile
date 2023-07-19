@@ -18,7 +18,7 @@ pipeline {
 			steps {
 				echo "Testing.."
 				sh '''
-				echo "Doing Test"
+				echo "doing test stuff.."
 				'''
 				}
 			}
@@ -31,4 +31,5 @@ pipeline {
 				}
 			}
 		}
+		build 'Hello'
 	}
