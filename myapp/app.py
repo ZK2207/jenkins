@@ -2,12 +2,11 @@ from flask import Flask, render_template
 
 app = Flask(__name__, template_folder='template')
 
-# Danh sách môn học
 subjects = [
-    {'id': 1, 'name': 'Toán học'},
-    {'id': 2, 'name': 'Vật lý'},
-    {'id': 3, 'name': 'Hóa học'},
-    {'id': 4, 'name': 'Ngôn ngữ'},
+    {'id': 1, 'name': 'Python'},
+    {'id': 2, 'name': 'Ruby'},
+    {'id': 3, 'name': 'Java'},
+    {'id': 4, 'name': 'PHP'},
 ]
 
 @app.route('/')
