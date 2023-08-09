@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage('Checkout') {
+        /*stage('Checkout') {
             agent {
                  label 'Docker_Local_Pool'
                 }
@@ -9,7 +9,7 @@ pipeline {
                 // Git checkout code
                 git 'https://github.com/ZK2207/jenkins.git'
                 }
-        }
+        }*/
         
         stage('Build Docker Image') {
             steps {
