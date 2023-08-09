@@ -22,7 +22,7 @@ pipeline {
                     def dockerImage = 'zoe2512/simple-web'
                     // Build Docker image
                     docker.image('python:3.8-slim').inside {
-                        sh 'pip install --user flask'
+                        sh 'pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org flask --user'
                         sh "docker build -t ${dockerImage} ."
                     }
                     /*def image = 'zoe2512/simple-web'
