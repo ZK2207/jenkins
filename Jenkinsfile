@@ -3,6 +3,9 @@ pipeline {
     
     stages {
         stage('Checkout') {
+            agent {
+                label 'Docker_Local_Pool'
+                }
             steps {
                 // Git checkout code
                 checkout scm
@@ -11,6 +14,9 @@ pipeline {
         
         stage('Build and Push Docker Image') {
             steps {
+                agent {
+                label 'Docker_Local_Pool'
+                }
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
                     def dockerImage = 'zoe2512/simple-web'
@@ -35,7 +41,7 @@ pipeline {
         stage('Deploy to Docker') {
             steps {
                 agent {
-                    label 'Docker_Pool'
+                    label 'Docker_Sever_Pool'
                 }
                 script {
                     
