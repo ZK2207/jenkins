@@ -18,7 +18,7 @@ pipeline {
                 }*/
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
-                    sh "cd /myapp"
+                    sh "cd myapp/"
                     def image = 'zoe2512/simple-web'
                     dockerImage = docker.build("${image}")
                 }
