@@ -3,9 +3,6 @@ pipeline {
     
     stages {
         stage('Checkout') {
-            agent {
-                lable 'Docker_Pool'
-                }
             steps {
                 // Git checkout code
                 checkout scm
@@ -38,7 +35,7 @@ pipeline {
         stage('Deploy to Docker') {
             steps {
                 agent {
-                    lable 'Docker_Pool'
+                    label 'Docker_Pool'
                 }
                 script {
                     
