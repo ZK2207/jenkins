@@ -7,7 +7,7 @@ pipeline {
                 }
             steps {
                 // Git checkout code
-                checkout scm
+                git 'https://github.com/ZK2207/jenkins.git'
                 }
         }
         
