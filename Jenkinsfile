@@ -4,7 +4,7 @@ pipeline {
     stages {
 ///        stage('Checkout') {
 ///             agent {
-                label 'Docker_Local_Pool'
+ //               label 'Docker_Local_Pool'
  ///                }
  ///            steps {
   ///               // Git checkout code
