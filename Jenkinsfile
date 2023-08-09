@@ -2,15 +2,15 @@ pipeline {
     agent none
     
     stages {
-        stage('Checkout') {
-            agent {
+///        stage('Checkout') {
+///             agent {
                 label 'Docker_Local_Pool'
-                }
-            steps {
-                // Git checkout code
-                checkout scm
-            }
-        }
+ ///                }
+ ///            steps {
+  ///               // Git checkout code
+   ///              checkout scm
+  ///           }
+ ///        }
         
         stage('Build and Push Docker Image') {
             steps {
