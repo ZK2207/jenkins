@@ -34,7 +34,11 @@ pipeline {
         
         stage('Deploy to Docker') {
             steps {
-                agent Docker_Pool
+                agent {
+                    node {
+                        lable 'Docker_Pool'
+                    }
+                }
                 script {
                     
                     def dockerImage = 'zoe2512/simple-web'
