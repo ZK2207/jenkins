@@ -28,7 +28,8 @@ pipeline {
             /*agent {
                  label 'Docker_Local_Pool'
                 }*/
-            script {
+            steps {
+                script {
                     
                     def dockerImage = 'zoe2512/simple-web'
                     def containerName = 'simple-web'
@@ -42,6 +43,7 @@ pipeline {
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
                 }
             }
+        }
         /* stage('Push Docker Image') {     
             // Login to DockerHub and push image
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
