@@ -45,7 +45,7 @@ pipeline {
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
                 }
         }
-        stage('Push Docker Image') {     
+        /* stage('Push Docker Image') {     
             // Login to DockerHub and push image
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
             // sh "docker login -u your-dockerhub-username -p ${DOCKERHUB_PASSWORD}"
@@ -95,5 +95,5 @@ pipeline {
         failure {
             echo "Deployment failed"
         }
-    }
+    }*/
 }
