@@ -2,10 +2,10 @@ pipeline {
     agent none
     
     stages {
-        agent {
-            lable 'Docker_Pool'
-        }
         stage('Checkout') {
+            agent {
+                lable 'Docker_Pool'
+                }
             steps {
                 // Git checkout code
                 checkout scm
