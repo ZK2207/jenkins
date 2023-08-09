@@ -1,7 +1,10 @@
 pipeline {
-    agent any
+    agent none
     
     stages {
+        agent {
+            lable 'Docker_Pool'
+        }
         stage('Checkout') {
             steps {
                 // Git checkout code
@@ -35,9 +38,7 @@ pipeline {
         stage('Deploy to Docker') {
             steps {
                 agent {
-                    node {
-                        lable 'Docker_Pool'
-                    }
+                    lable 'Docker_Pool'
                 }
                 script {
                     
