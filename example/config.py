@@ -1,4 +1,4 @@
-jenkins_url = 'http://ip172-18-0-119-cj50m0ogftqg00agu1e0-8080.direct.labs.play-with-docker.com/'
+jenkins_url = 'http://ip172-18-0-13-cj9g14mfml8g009qun6g-8080.direct.labs.play-with-docker.com/'
 username = 'zoe'
 password = 'zoe'
 xml = """<?xml version='1.1' encoding='UTF-8'?>
