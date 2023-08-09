@@ -22,7 +22,7 @@ pipeline {
                     def dockerImage = 'zoe2512/simple-web'
                     // Build Docker image
                     docker.image('python:3.8-slim').inside {
-                        sh 'pip install -r requirements.txt'
+                        sh 'pip3 install -r requirements.txt'
                         sh "docker build -t ${dockerImage} ."
                     }
                     /*def image = 'zoe2512/simple-web'
