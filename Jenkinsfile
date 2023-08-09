@@ -14,7 +14,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 agent {
-                label 'Docker_Local_Pool'
+                    label 'Docker_Local_Pool'
                 }
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
@@ -28,8 +28,9 @@ pipeline {
             }
         }
         stage('Testing - Running in Docker Local') {
-            agent {
-                label 'Docker_Local_Pool'
+            steps {
+                agent {
+                    label 'Docker_Local_Pool'
                 }
             script {
                     
@@ -44,6 +45,7 @@ pipeline {
                     sh "docker pull ${dockerImage}"
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
                 }
+            }
         }
         /* stage('Push Docker Image') {     
             // Login to DockerHub and push image
