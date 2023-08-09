@@ -24,6 +24,7 @@ pipeline {
                         sh 'pip install -r requirements.txt'
                         sh "docker build -t ${dockerImage} ."
                     }
+                }
             }
         }
         stage('Testing - Running in Docker Local') {
