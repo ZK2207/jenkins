@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        /*stage('Checkout') {
+        stage('Checkout') {
             agent {
                  label 'Docker_Local_Pool'
                 }
@@ -9,7 +9,7 @@ pipeline {
                 // Git checkout code
                 git 'https://github.com/ZK2207/jenkins.git'
                 }
-        }*/
+        }
         
         stage('Build Docker Image') {
             steps {
@@ -18,12 +18,11 @@ pipeline {
                 }
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
-                    def image = 'zoe2512/simple-web'
-                    dockerImage = docker.build("${image}")
+                    def dockerImage = 'zoe2512/simple-web'
                     // Build Docker image
-                    // docker.image('python:3.8-slim').inside {
-                        // sh 'pip install -r requirements.txt'
-                        //sh 'docker build -t ${dockerImage} .'
+                    docker.image('python:3.8-slim').inside {
+                        sh 'pip install -r requirements.txt'
+                        sh "docker build -t ${dockerImage} ."
                     }
             }
         }
