@@ -33,9 +33,10 @@ pipeline {
         }
         
         stage('Deploy to Docker') {
-            agent docker_node_01
             steps {
+                agent Docker_Pool
                 script {
+                    
                     def dockerImage = 'zoe2512/simple-web'
                     def containerName = 'simple-web'
                     
@@ -49,28 +50,26 @@ pipeline {
                 }
             }
         }
-    }
-    
-    post {
-        success {
-            def mess = 'successful'
-            echo "${mess}"
-        }
-        failure {
-            def mess = 'failed'
-            echo "${mess}"
-        }
         stage('Email Notification') {
             steps {
                 emailext (
                     to: 'nghihuynh7022@gmail.com',
                     subject: 'CI/CD Notification',
-                    body: "Deployment of Flask app was ${mess}.",
+                    body: "Deployment of Flask app was ${currentBuild.result}.",
                     mimeType: 'text/html',
                     attachLog: true,
                     recipientProviders: [[$class: 'CulpritsRecipientProvider']]
                 )
             }
+        }
+    }
+    
+    post {
+        success {
+            echo "Deployment successful"
+        }
+        failure {
+            echo "Deployment failed"
         }
     }
 }
