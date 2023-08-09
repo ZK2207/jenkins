@@ -1,10 +1,10 @@
 pipeline {
-    agent none
+    agent any
     stages {
         stage('Checkout') {
-            agent {
+            /*agent {
                  label 'Docker_Local_Pool'
-                }
+                }*/
             steps {
                 // Git checkout code
                 git 'https://github.com/ZK2207/jenkins.git'
@@ -13,21 +13,21 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                agent {
-                    label 'Docker_Local_Pool'
-                }
+            /*agent {
+                 label 'Docker_Local_Pool'
+                }*/
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
+                    sh "cd /app"
                     def image = 'zoe2512/simple-web'
                     dockerImage = docker.build("${image}")
                 }
             }
         }
         stage('Testing - Running in Docker Local') {
-            steps {
-                agent {
-                    label 'Docker_Local_Pool'
-                }
+            /*agent {
+                 label 'Docker_Local_Pool'
+                }*/
             script {
                     
                     def dockerImage = 'zoe2512/simple-web'
