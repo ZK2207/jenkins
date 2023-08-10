@@ -2,27 +2,20 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
-            /*agent {
-                 label 'Docker_Local_Pool'
-                }*/
             steps {
                 // Git checkout code
                 git 'https://github.com/ZK2207/jenkins.git'
-                }
+            }
         }
         
         stage('Build Docker Image') {
             steps {
-            /*agent {
-                 label 'Docker_Local_Pool'
-                }*/
                 script {
                     // def dockerImage = 'your-dockerhub-username/flask-app'
-                    sh "cd myapp/"
+                    sh "docker image prune -af"
                     def dockerImage = 'zoe2512/simple-web'
                     // Build Docker image
                     docker.image('python:3.8-slim').inside {
-                        //sh 'pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org flask --user'
                         sh "docker build -t ${dockerImage} ."
                     }
                     /*def image = 'zoe2512/simple-web'
@@ -36,7 +29,6 @@ pipeline {
                 }*/
             steps {
                 script {
-                    
                     def dockerImage = 'zoe2512/simple-web'
                     def containerName = 'simple-web'
                     
@@ -45,21 +37,27 @@ pipeline {
                     sh "docker rm ${containerName} || true"
                     
                     // Pull and run Docker container
-                    sh "docker pull ${dockerImage}"
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
                 }
             }
         }
-        /* stage('Push Docker Image') {     
-            // Login to DockerHub and push image
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
-            // sh "docker login -u your-dockerhub-username -p ${DOCKERHUB_PASSWORD}"
-            // sh "docker push ${dockerImage}"
-            sh "docker login -u zoe2512 -p ${DOCKERHUB_PASSWORD}"
-            sh "docker push ${dockerImage}"
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    def dockerImage = 'zoe2512/simple-web'
+                    // Login to DockerHub and push image
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+                    // sh "docker login -u your-dockerhub-username -p ${DOCKERHUB_PASSWORD}"
+                    // sh "docker push ${dockerImage}"
+                    sh "docker login -u zoe2512 -p qwerty123"
+                    sh "docker tag ${dockerImage} ${dockerImage}:latest"
+                    sh "docker push ${dockerImage}"
+                    }
+                }
+            }
         }
         
-        stage('Deploy to Docker') {
+        /*stage('Deploy to Docker') {
             steps {
                 agent {
                     label 'Docker_Sever_Pool'
