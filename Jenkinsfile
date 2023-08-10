@@ -1,69 +1,81 @@
 pipeline {
+    environment {
+        dockerImage = 'zoe2512/simple-web'
+        containerName = 'simple-web'
+    }
     agent none
     stages {
-        stage('Checkout code Build Docker Image') {
+
+        stage('Git Checkout') {
+            agent {
+                label 'master'
+            }
+            steps {
+                git 'https://github.com/ZK2207/jenkins.git'
+            }
+        }
+
+        stage('Build Docker Image') {
             agent {
                 label 'master'
             }
             steps {
                 git 'https://github.com/ZK2207/jenkins.git'
                 script {
+                    echo "### Remove unsed images"
                     sh "docker image prune -af"
-                    def dockerImage = 'zoe2512/simple-web'
-                    // Build Docker image
-                    docker.image('python:3.8-slim').inside {
-                        sh "docker build -t ${dockerImage} ."}
+
+                    echo "### Display Dockerlile"
+                    sh "cat Dockerfile"
+
+                    echo "### Build Docker image"
+                    sh "docker build -t ${dockerImage} ."
+                    sh "docker image ls"
                 }
             }
         }
-        stage('Testing in Local') {
+        stage('Deloy Simple Web in Local') {
             agent {
-                    label 'Local_Pool'
+                    label 'Local_Pool' // Docker_Local_01
                 }
             steps {
                 script {
-                    def dockerImage = 'zoe2512/simple-web'
-                    def containerName = 'simple-web'
-                    
-                    // Remove existing container (if any)
+                    echo "### Remove existing container"
                     sh "docker rm -f ${containerName}"
-                    
-                    // Pull and run Docker container
+
+                    echo "### Pull and run Docker container"
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
+                    sh "docker ps -a"
                 }
             }
         }
-        stage('Push Docker Image') {
+        stage('Push Docker Image to Docker Hub') {
             agent {
                 label 'master'
                 }
             steps {
                 script {
-                    def dockerImage = 'zoe2512/simple-web'
                     sh "docker login -u zoe2512 -p qwerty123"
                     sh "docker tag ${dockerImage} ${dockerImage}:latest"
                     sh "docker push ${dockerImage}"
+                    sh "docker image prune -af"
                 }
             }
         }
         
-        stage('Deploy to Docker') {
+        stage('Deploy Simple Web in Server') {
             agent {
-                label 'Server_Pool'
+                label 'Server_Pool' // Docker_Server_01
             }
             steps {
                 script {
-                    
-                    def dockerImage = 'zoe2512/simple-web'
-                    def containerName = 'simple-web'
-                    
-                    // Stop and remove existing container (if any)
-                    sh "docker stop ${containerName} || true"
-                    sh "docker rm ${containerName} || true"
-                    
-                    // Pull and run Docker container
+                    echo "### Remove existing container"
+                    sh "docker rm -f ${containerName}"
+
+                    echo "### Pull and run Docker container"
                     sh "docker pull ${dockerImage}"
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
+                    sh "docker ps -a"
                 }
             }
         }
@@ -72,7 +84,7 @@ pipeline {
                 label 'master'
             }
             steps {
-                echo "Job Done"
+                echo "### Sending Email..."
             }
             post{
                 always{
