@@ -1,40 +1,32 @@
 pipeline {
-    agent any
+    agent none
     stages {
-        stage('Checkout') {
-            steps {
-                // Git checkout code
-                git 'https://github.com/ZK2207/jenkins.git'
+        stage('Checkout code Build Docker Image') {
+            agent {
+                label 'master'
             }
-        }
-        
-        stage('Build Docker Image') {
             steps {
+                git 'https://github.com/ZK2207/jenkins.git'
                 script {
-                    // def dockerImage = 'your-dockerhub-username/flask-app'
                     sh "docker image prune -af"
                     def dockerImage = 'zoe2512/simple-web'
                     // Build Docker image
                     docker.image('python:3.8-slim').inside {
-                        sh "docker build -t ${dockerImage} ."
-                    }
-                    /*def image = 'zoe2512/simple-web'
-                    dockerImage = docker.build("${image}")*/
+                        sh "docker build -t ${dockerImage} ."}
                 }
             }
         }
-        stage('Testing - Running in Docker Local') {
-            /*agent {
-                 label 'Docker_Local_Pool'
-                }*/
+        stage('Testing in Local') {
+            agent {
+                    label 'Local_Pool'
+                }
             steps {
                 script {
                     def dockerImage = 'zoe2512/simple-web'
                     def containerName = 'simple-web'
                     
-                    // Stop and remove existing container (if any)
-                    sh "docker stop ${containerName} || true"
-                    sh "docker rm ${containerName} || true"
+                    // Remove existing container (if any)
+                    sh "docker rm -f ${containerName}"
                     
                     // Pull and run Docker container
                     sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
@@ -42,26 +34,24 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
+            agent {
+                label 'master'
+                }
             steps {
                 script {
                     def dockerImage = 'zoe2512/simple-web'
-                    // Login to DockerHub and push image
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
-                    // sh "docker login -u your-dockerhub-username -p ${DOCKERHUB_PASSWORD}"
-                    // sh "docker push ${dockerImage}"
                     sh "docker login -u zoe2512 -p qwerty123"
                     sh "docker tag ${dockerImage} ${dockerImage}:latest"
                     sh "docker push ${dockerImage}"
-                    }
                 }
             }
         }
         
-        /*stage('Deploy to Docker') {
+        stage('Deploy to Docker') {
+            agent {
+                label 'Server_Pool'
+            }
             steps {
-                agent {
-                    label 'Docker_Sever_Pool'
-                }
                 script {
                     
                     def dockerImage = 'zoe2512/simple-web'
@@ -78,25 +68,28 @@ pipeline {
             }
         }
         stage('Email Notification') {
+            agent {
+                label 'master'
+            }
             steps {
-                emailext (
-                    to: 'nghihuynh7022@gmail.com',
-                    subject: 'CI/CD Notification',
-                    body: "Deployment of Flask app was ${currentBuild.result}.",
-                    mimeType: 'text/html',
-                    attachLog: true,
-                    recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                )
+                echo "Job Done"
+            }
+            post{
+                always{
+                    mail to: "nghihuynh7022@gmail.com",
+                    subject: "CI/CD Notification",
+                    body: "Deployment of Flask app was ${currentBuild.result}"
+                }
             }
         }
     }
     
     post {
         success {
-            echo "Deployment successful"
+            echo "Deployment Successful"
         }
         failure {
-            echo "Deployment failed"
-        }*/
+            echo "Deployment Failed"
+        }
     }
 }
