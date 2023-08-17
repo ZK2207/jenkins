@@ -17,4 +17,4 @@ print(f'Job {my_job} has been created')
 
 # Delete job using method in Jenkins class
 # del jenkins[job_name]
-jenkins.delete_job(job_name)
+# jenkins.delete_job(job_name)
