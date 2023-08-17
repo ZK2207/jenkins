@@ -79,7 +79,7 @@ pipeline {
                 }
             }
         }
-        stage('Email Notification') {
+        stage('Email Notification!!') {
             agent {
                 label 'master'
             }
