@@ -44,7 +44,7 @@ pipeline {
                     sh "docker rm -f ${containerName}"
 
                     echo "### Pull and run Docker container"
-                    sh "docker run -d --name simple-web -p 80:5000 ${dockerImage}"
+                    sh "docker run -d --name simple-wejb -p 80:5000 ${dockerImage}"
                     sh "docker ps -a"
                 }
             }
