@@ -1,35 +1,37 @@
 pipeline {
-	agent { 
-		node {
-			label 'docker'
-			}
-		}
+  agent {
+    node {
+      label 'docker'
+    }
 
-	stages {
-		stage('Build') {
-			steps {
-				echo "Building.."
-				sh '''
+  }
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Building..'
+        sh '''
 				echo "doing build stuff.."
 				'''
-				}
-			}
-		stage('Test') {
-			steps {
-				echo "Testing.."
-				sh '''
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Testing..'
+        sh '''
 				echo "doing test stuff.."
 				'''
-				}
-			}
-		stage('Deliver') {
-			steps {
-				echo 'Deliver....'
-				sh '''
+      }
+    }
+
+    stage('Deliver') {
+      steps {
+        echo 'Deliver....'
+        sh '''
 				echo "doing delivery stuff.."
 				'''
-				}
-			}
-		}
-	}
+      }
+    }
 
+  }
+}
